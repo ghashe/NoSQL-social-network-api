@@ -90,5 +90,5 @@ UserThoughtScaema.virtual("userReactionCount").get(function () {
 // The ThoughtSchema is used to create the Thought model
 const UserThought = model("UserThought", UserThoughtScaema);
 
-// Thought model export
+// export the UserThought model
 module.exports = UserThought;
