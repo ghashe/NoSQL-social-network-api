@@ -108,6 +108,3 @@ dist
 
 # VS Code
 .vscode 
-
-# Env
-.env
