@@ -1,4 +1,4 @@
-// Importing User and Thought models
+// Importing User and UserThought models
 const { User, UserThought } = require("../models");
 
 const userController = {
@@ -11,7 +11,7 @@ const userController = {
       .select("-__v")
       .sort({ _id: -1 })
       .then((databaseUserData) => response.json(databaseUserData))
-      // Catching error and ending status code 400 if the server is unable to process the request because of a client error
+      // Catching error and sending status code 400 if the server is unable to process the request because of a client error
       .catch((err) => {
         console.log(err);
         response.sendStatus(400);
