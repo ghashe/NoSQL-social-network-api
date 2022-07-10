@@ -136,9 +136,9 @@ const userthoughtController = {
 
   // ADD reaction
   createUserReaction({ params, body }, response) {
-    UserThought.finfOneAndUpdate(
-      { _is: params.UserThoughtId },
-      { $push: { userReaction: body } },
+    UserThought.findOneAndUpdate(
+      { _id: params.userThoughtId },
+      { $push: { reactions: body } },
       { new: true, runValidators: true }
     )
       .populate({ path: "userReactions", select: "-__v" })
@@ -147,7 +147,7 @@ const userthoughtController = {
         if (!databaseUserData) {
           // Sending a status 404 message to the user if user with the given id is not found
           response.status(404).jason({
-            message: `Sorry, no though with id ${params.UserThoughtId} has been found! Please check your input and try again!`,
+            message: `Sorry, no though with id ${params.userThoughtId} has been found! Please check your input and try again!`,
           });
           return;
         }
@@ -156,10 +156,10 @@ const userthoughtController = {
       // Sending error if any to the user if the server encountered an unexpected condition that prevented it from fulfilling the request.
       .catch((err) => response.json(err));
   },
-  deleteUserReaction({ params }, response) {
+  deleteReaction({ params }, response) {
     UserThought.findOneAndUpdate(
       { _id: params.userThoughtId },
-      { $pull: { userReactions: { userReactionId: params.userReactionId } } },
+      { $pull: { reactions: { reactionId: params.reactionId } } },
       { new: true }
     )
       .then((databaseUserData) => {
@@ -170,9 +170,9 @@ const userthoughtController = {
           });
           return;
         }
-        res.json(databaseUserData);
+        response.json(databaseUserData);
       })
-      .catch((err) => res.json(err));
+      .catch((err) => response.json(err));
   },
 };
 
