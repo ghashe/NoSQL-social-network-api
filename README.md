@@ -63,7 +63,8 @@ This repo is not intended to be deployed. In order to use this application, simp
 
 4. To start the server execute the following command at the command line
 
-```npm start
+```
+npm start
 
 ```
 
