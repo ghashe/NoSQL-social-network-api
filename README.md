@@ -70,6 +70,14 @@ npm start
 
 5. Open Insomnia Core and follow the following test instruction to test the API routes.
 
+## User
+
+View walk through video here - [Screencastify](https://drive.google.com/file/d/1LFUJJin1ijby9IQiY2raHeN1f0OIyvno/view)<br>
+
+## Thought
+
+View walk through video here - [Screencastify](https://drive.google.com/file/d/1iFmtbf3F98fZoHE-WbBrYTzRa5HhabNN/view)<br>
+
 ## Tests:
 
 ## Restful API testing with Insomnia Core
