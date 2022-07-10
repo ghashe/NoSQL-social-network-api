@@ -147,9 +147,9 @@ npm start
 
 # 📋
 
-⚡️ Accesible
-⚡️ Efficient
-⚡️ Easy to read
+⚡️ Accesible  
+⚡️ Efficient  
+⚡️ Easy to read  
 ⚡️ Easy to modify
 
 ## Sections
