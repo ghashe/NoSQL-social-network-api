@@ -85,27 +85,49 @@ const userController = {
   },
 
   // Delete a user (DELETE /api/users/id)
-  deleteUseer({ params }, response) {
-    UserThought.delatemany({ userId: params.id }).then(() => {
-      User.findOneAndDelete({ userId: params.id })
-        .then((databaseUserData) => {
-          if (!databaseUserData) {
-            // Sending a status 404 message to the user if user with the given id is not found
-            response.status(404).jason({
-              message: `Sorry, no user with id ${params.id} has been found! Please check your input and try again!`,
-            });
-            return;
+  deleteUser({ params }, response) {
+    User.findOneAndDelete({ _id: params.id })
+      .then((databaseUserData) => {
+        if (!databaseUserData) {
+          response.status(404).json({
+            message: `Sorry, no user with id ${params.id} has been found! Please check your input and try again!`,
+          });
+          return;
+        }
+        return databaseUserData;
+      })
+      .then((databaseUserData) => {
+        User.updateMany(
+          {
+            _id: { $in: databaseUserData.friends },
+          },
+          {
+            $pull: {
+              friends: params.userId,
+            },
           }
-
-          // If a user with the given id is found and deleted, convert data to JSON format and send that user to the client
-          response.json(databaseUserData);
-        })
-        // Sending error if any to the user if the server encountered an unexpected condition that prevented it from fulfilling the request.
-        .catch((err) => {
-          console.log(err);
-          response.json(err);
-        });
-    });
+        )
+          .then(() => {
+            //deletes user's thought associated with id
+            UserThought.deleteMany({
+              username: databaseUserData.username,
+            })
+              .then(() => {
+                response.json({
+                  message: `User with id ${params.id} has been deleted successfully`,
+                });
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   },
 
   // ADD friend (/api/users/:userid/fiends/:friendId)
@@ -119,7 +141,7 @@ const userController = {
         if (!databaseUserData) {
           // Sending a status 404 message to the user if user with the given id is not found
           response.status(404).jason({
-            message: `Sorry, no user with id ${params.userId} has been found! Please check your input and try again!`,
+            message: `Sorry, no user with id ${params.friendId} has been found! Please check your input and try again!`,
           });
           return;
         }
@@ -133,9 +155,9 @@ const userController = {
       });
   },
 
-  // DELETE friend (/api/users/:userid/fiends/:friendId)
+  // DELETE friend (/api/users/:userid/friends/:friendId)
   deleteFriend({ params }, response) {
-    User.findOneAndDelete(
+    User.findOneAndUpdate(
       { _id: params.userId },
       { $pull: { friends: params.friendId } },
       { new: true }
