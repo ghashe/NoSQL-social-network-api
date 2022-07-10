@@ -32,7 +32,7 @@ const userController = {
       .then((databaseUserData) => {
         if (!databaseUserData) {
           // Sending a status 404 message to the user if user with the given id is not found
-          response.status(404).jason({
+          response.status(404).json({
             message: `Sorry, no user with id ${params.id} has been found! Please check your input and try again!`,
           });
           return;
